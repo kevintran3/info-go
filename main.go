@@ -36,7 +36,10 @@ func formatMapStringandSort(stringmap map[string]string, toSort bool) []string {
 
 func requestToStr(req *http.Request) string {
 	hostInfo := clouddetector.GetHostInfo()
-	hostInfo["IP"] = ipinfo.ParseMyIP().Str
+	ip := ipinfo.ParseMyIPv4()
+	hostInfo["IP"] = ip.Ip
+	hostInfo["IPv6"] = ipinfo.ParseMyIPv6().Ip
+	hostInfo["Location"] = fmt.Sprintf("%s, %s, %s (%s)", ip.City, ip.Region, ip.Country, ip.Organization)
 
 	var headers = make(map[string]string)
 	var logheaders = make(map[string]interface{})
