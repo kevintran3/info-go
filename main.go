@@ -74,7 +74,7 @@ func main() {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, ipinfo.ParseMyIP().Str)
+	fmt.Fprint(w, ipinfo.ClientIP(r))
 }
 
 func infoHandler(w http.ResponseWriter, r *http.Request) {
