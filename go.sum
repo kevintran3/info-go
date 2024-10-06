@@ -1,6 +1,6 @@
 github.com/kevintran3/cloud-detector v1.0.0 h1:Zaf/NFw6Cel8beFGbHjYqACQTyRC15qFPTMjxovAATg=
 github.com/kevintran3/cloud-detector v1.0.0/go.mod h1:JFPXGWM84CD9QG+Kfqu+lQA2VVZu6yhoc8FV3a158Ew=
-github.com/kevintran3/ip-info v1.0.1 h1:AotiWxp36GkhuLWrnZgDSSUwAVQVLFCacXM5ImlDD/Q=
-github.com/kevintran3/ip-info v1.0.1/go.mod h1:ZRcahkEvLsPwfqYxXvPsfB2JvFb3yCAX3VwiJ7vVmV4=
+github.com/kevintran3/ip-info v1.0.3 h1:aDwU9aheCAzrcjKkPe1VJaR76oJCgBeTmwGTi7xotQM=
+github.com/kevintran3/ip-info v1.0.3/go.mod h1:ZRcahkEvLsPwfqYxXvPsfB2JvFb3yCAX3VwiJ7vVmV4=
 golang.org/x/sys v0.18.0 h1:DBdB3niSjOA/O0blCZBqDefyWNYveAYMNF1Wum0DYQ4=
 golang.org/x/sys v0.18.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
