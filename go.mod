@@ -1,6 +1,6 @@
 module github.com/kevintran3/info-go
 
-go 1.22.0
+go 1.23
 
 require (
 	github.com/kevintran3/cloud-detector v1.0.0
