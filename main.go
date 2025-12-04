@@ -10,6 +10,22 @@ import (
 
 	clouddetector "github.com/kevintran3/cloud-detector"
 	ipinfo "github.com/kevintran3/ip-info"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+)
+
+var (
+	kt3InfoIP = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "kt3_info_ip",
+		Help: "KT3 info (1=running) labeled by the Kubernetes node's public IP.",
+	}, []string{"ip", "country", "country_code", "region", "region_code", "city", "org"})
+	kt3InfoIPv6 = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "kt3_info_ipv6",
+		Help: "KT3 info (1=running) labeled by the Kubernetes node's public IP.",
+	}, []string{"ip"})
+	myIPv4 = ipinfo.ParseMyIPv4()
+	myIPv6 = ipinfo.ParseMyIPv6()
 )
 
 func getPort() string {
@@ -36,10 +52,9 @@ func formatMapStringandSort(stringmap map[string]string, toSort bool) []string {
 
 func requestToStr(req *http.Request) string {
 	hostInfo := clouddetector.GetHostInfo()
-	ip := ipinfo.ParseMyIPv4()
-	hostInfo["IP"] = ip.Ip
-	hostInfo["IPv6"] = ipinfo.ParseMyIPv6().Ip
-	hostInfo["Location"] = fmt.Sprintf("%s, %s, %s (%s)", ip.City, ip.Region, ip.Country, ip.Organization)
+	hostInfo["IP"] = myIPv4.Ip
+	hostInfo["IPv6"] = myIPv6.Ip
+	hostInfo["Location"] = fmt.Sprintf("%s, %s, %s (%s)", myIPv4.City, myIPv4.Region, myIPv4.Country, myIPv4.Organization)
 
 	var headers = make(map[string]string)
 	var logheaders = make(map[string]interface{})
@@ -68,6 +83,12 @@ func main() {
 	log.SetFlags(0)
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/info", infoHandler)
+
+	kt3InfoIPMetric := kt3InfoIP.WithLabelValues(myIPv4.Ip, myIPv4.Country, myIPv4.CountryCode3, myIPv4.Region, myIPv4.RegionCode, myIPv4.City, myIPv4.Organization)
+	kt3InfoIPMetric.Set(1.0)
+	kt3InfoIPv6Metric := kt3InfoIPv6.WithLabelValues(myIPv6.Ip)
+	kt3InfoIPv6Metric.Set(1.0)
+	http.Handle("/metrics", promhttp.Handler())
 
 	log.Fatal(http.ListenAndServe(":"+getPort(), nil))
 }
