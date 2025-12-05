@@ -20,10 +20,6 @@ var (
 		Name: "kt3_info_ip",
 		Help: "KT3 info (1=running) labeled by the Kubernetes node's public IP.",
 	}, []string{"ip", "country", "country_code", "region", "region_code", "city", "org"})
-	kt3InfoIPv6 = promauto.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "kt3_info_ipv6",
-		Help: "KT3 info (1=running) labeled by the Kubernetes node's public IP.",
-	}, []string{"ip"})
 	myIPv4 = ipinfo.ParseMyIPv4()
 	myIPv6 = ipinfo.ParseMyIPv6()
 )
@@ -86,8 +82,6 @@ func main() {
 
 	kt3InfoIPMetric := kt3InfoIP.WithLabelValues(myIPv4.Ip, myIPv4.Country, myIPv4.CountryCode3, myIPv4.Region, myIPv4.RegionCode, myIPv4.City, myIPv4.Organization)
 	kt3InfoIPMetric.Set(1.0)
-	kt3InfoIPv6Metric := kt3InfoIPv6.WithLabelValues(myIPv6.Ip)
-	kt3InfoIPv6Metric.Set(1.0)
 	http.Handle("/metrics", promhttp.Handler())
 
 	log.Fatal(http.ListenAndServe(":"+getPort(), nil))
